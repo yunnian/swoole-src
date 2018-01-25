@@ -1046,6 +1046,7 @@ int swoole_gethostbyname(int flags, char *name, char *addr)
     int i = 0;
     for (i = 0; i < SW_DNS_HOST_BUFFER_SIZE; i++)
     {
+        php_printf("host%s:\n",host_entry->h_addr_list);
         if (host_entry->h_addr_list[i] == NULL)
         {
             break;

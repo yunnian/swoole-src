@@ -204,6 +204,8 @@ static int swAioBase_thread_onTask(swThreadPool *pool, void *task, int task_len)
     struct in6_addr addr_v6;
 
     int ret = -1;
+    php_printf("---------------------\n");
+    php_printf("type:%d",event->type);
 
     start_switch:
     switch(event->type)
@@ -257,6 +259,7 @@ static int swAioBase_thread_onTask(swThreadPool *pool, void *task, int task_len)
         else
         {
             ret = swoole_gethostbyname(AF_INET, event->buf, (char *) &addr_v4);
+
         }
         bzero(event->buf, event->nbytes);
 #ifndef HAVE_GETHOSTBYNAME2_R
@@ -268,9 +271,13 @@ static int swAioBase_thread_onTask(swThreadPool *pool, void *task, int task_len)
         }
         else
         {
-            if (inet_ntop(event->flags, event->flags == AF_INET6 ? (void *) &addr_v6 : (void *) &addr_v4, event->buf,
+            //if (inet_ntop(event->flags, event->flags == AF_INET6 ? (void *) &addr_v6 : (void *) &addr_v4, event->buf,
+            php_printf("看看是什么%s:\n",event->buf);
+            php_printf("有多长%d:\n",event->nbytes);
+            if (inet_ntop(event->flags, &addr_v4, event->buf,
                     event->nbytes) == NULL)
             {
+                php_printf("哎呀是这里吗");
                 ret = -1;
                 event->error = SW_ERROR_BAD_IPV6_ADDRESS;
             }
@@ -291,6 +298,7 @@ static int swAioBase_thread_onTask(swThreadPool *pool, void *task, int task_len)
         break;
     }
 
+    php_printf("rt:%d",ret);
     event->ret = ret;
     if (ret < 0)
     {

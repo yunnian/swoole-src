@@ -400,7 +400,6 @@ static void php_swoole_aio_onComplete(swAio_event *event)
         }
         zcallback = file_req->callback;
     }
-
     ret = event->ret;
     if (ret < 0)
     {
